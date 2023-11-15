@@ -8,6 +8,11 @@ public class GameManager : MonoBehaviour
     public GameObject donglePrefab; //동글 프리팹
     public Transform dongleGroup;   //동글이 생성될 위치
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     private void Start()
     {
         NextDongle();
