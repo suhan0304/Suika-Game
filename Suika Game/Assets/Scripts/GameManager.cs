@@ -27,6 +27,18 @@ public class GameManager : MonoBehaviour
         Dongle newDongle = GetDongle();
         lastDongle = newDongle;
 
+        StartCoroutine(WaitNext()); //대기후 NextDongle을 실행하는 코루틴 시작
+    }
+
+    IEnumerator WaitNext()
+    {
+        while(lastDongle != null)
+        {
+            yield return null; //한 프레임을 대기한다.
+        }
+
+        yield return new WaitForSeconds(2.5f); //2.5초를 대기한다
+
         NextDongle();
     }
 
