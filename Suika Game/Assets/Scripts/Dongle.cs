@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Dongle : MonoBehaviour
 {
+    public GameManager manager; //nextDongle에서 게임매니저를 넘겨받음
+
     public int level;
     public bool isDrag;
     public bool isMerge;
@@ -140,6 +142,8 @@ public class Dongle : MonoBehaviour
         yield return new WaitForSeconds(0.3f); //애니메이션 실행 시간 대기
 
         level++; //실제 레벨도 증가
+
+        manager.maxLevel = Mathf.Max(level, manager.maxLevel); // 더 높은 레벨을 반환시켜 최대 레벨을 유지시킨다.
 
         isMerge = false; //잠금장치 해제
     }
