@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
         //생성된 동글을 가져와 new Dongle로 지정
         Dongle newDongle = GetDongle();
         lastDongle = newDongle;
-        lastDongle.level = Random.Range(0, 3); //레벨 0, 1, 2 에서 랜덤하게 생성되도록 구현
+        lastDongle.level = Random.Range(0, 2); //레벨 0, 1 에서 랜덤하게 생성되도록 구현
         lastDongle.gameObject.SetActive(true); //레벨 설정 후 활성화
         StartCoroutine(WaitNext()); //대기후 NextDongle을 실행하는 코루틴 시작
     }
