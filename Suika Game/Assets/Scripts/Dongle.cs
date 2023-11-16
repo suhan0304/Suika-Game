@@ -88,6 +88,7 @@ public class Dongle : MonoBehaviour
                     other.Hide(transform.position); //상대방은 나를 향해 움직이면서 숨긴다.
 
                     //나는 레벨업
+                    LevelUp();
                 }
             }
         }
