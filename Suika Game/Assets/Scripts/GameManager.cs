@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
-
     public Dongle lastDongle;
     public GameObject donglePrefab; //동글 프리팹
     public Transform dongleGroup;   //동글이 생성될 위치
+    public GameObject effectPrefab; //이펙트 프리팹
+    public Transform effectGroup;   //이펙트가 생성될 위치
 
     public int maxLevel;
 
@@ -25,9 +25,13 @@ public class GameManager : MonoBehaviour
 
     Dongle GetDongle()
     {
+        //이펙트 생성
+        GameObject instantEffectObj = Instantiate(effectPrefab, effectGroup);
+        ParticleSystem instantEffect = instantEffectObj.GetComponent<ParticleSystem>();
+
         //동글 프리팹 복사해서 가져옴, 이 때 부모는 동글 그룹으로 설정
-        GameObject instant = Instantiate(donglePrefab, dongleGroup);
-        Dongle instantDongle = instant.GetComponent<Dongle>();
+        GameObject instantDongleObj = Instantiate(donglePrefab, dongleGroup);
+        Dongle instantDongle = instantDongleObj.GetComponent<Dongle>();
         return instantDongle;
     }
 

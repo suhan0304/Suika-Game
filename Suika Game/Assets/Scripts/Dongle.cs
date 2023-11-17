@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dongle : MonoBehaviour
 {
     public GameManager manager; //nextDongle에서 게임매니저를 넘겨받음
-
+    public ParticleSystem effect;
     public int level;
     public bool isDrag;
     public bool isMerge;
