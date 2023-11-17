@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
         //동글 프리팹 복사해서 가져옴, 이 때 부모는 동글 그룹으로 설정
         GameObject instantDongleObj = Instantiate(donglePrefab, dongleGroup);
         Dongle instantDongle = instantDongleObj.GetComponent<Dongle>();
+        instantDongle.effect = instantEffect;
         return instantDongle;
     }
 

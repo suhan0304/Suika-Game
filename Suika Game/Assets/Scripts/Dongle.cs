@@ -138,6 +138,7 @@ public class Dongle : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         anim.SetInteger("Level", level + 1); //레벨 올려서 애니메이션 실행
+        EffectPlay();
 
         yield return new WaitForSeconds(0.3f); //애니메이션 실행 시간 대기
 
@@ -146,5 +147,12 @@ public class Dongle : MonoBehaviour
         manager.maxLevel = Mathf.Max(level, manager.maxLevel); // 더 높은 레벨을 반환시켜 최대 레벨을 유지시킨다.
 
         isMerge = false; //잠금장치 해제
+    }
+
+    void EffectPlay()
+    {
+        effect.transform.position = transform.position;     //이펙트의 위치는 동글의 위치
+        effect.transform.localScale = transform.localScale; //이펙트의 크기는 동글의 크기와 비례
+        effect.Play();
     }
 }
