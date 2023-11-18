@@ -10,7 +10,7 @@ public class Dongle : MonoBehaviour
     public bool isDrag;
     public bool isMerge;
 
-    Rigidbody2D rigid;  //물리 효과 제어
+    public Rigidbody2D rigid;  //물리 효과 제어
     Animator anim; //애니메이션
     CircleCollider2D circle;
     SpriteRenderer spriteRenderer;
@@ -109,6 +109,11 @@ public class Dongle : MonoBehaviour
         rigid.simulated = false; //리지드바디 2D 물리효과 중지
         circle.enabled = false;  //서클 콜라이더 2D 비활성화
 
+        if(targetPos == Vector3.up * 100)
+        {
+            EffectPlay();
+        }
+
         StartCoroutine(HideRoutine(targetPos));
     }
 
@@ -119,8 +124,15 @@ public class Dongle : MonoBehaviour
         while(frameCount < 20)
         {
             frameCount++;//20프레임 실행되도록 
-            transform.position = Vector3.Lerp(transform.position, targetPos, 0.5f);
-            yield return null; //프레임 단위로 대기
+            if(targetPos != Vector3.up * 100)
+            {
+                transform.position = Vector3.Lerp(transform.position, targetPos, 0.5f);
+                yield return null; //프레임 단위로 대기
+            }
+            else if(targetPos == Vector3.up * 100) //게임매니저가  Hide 시켜준 경우
+            {
+                transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, 0.2f);
+            }
         }
 
         manager.score += (int)Mathf.Pow(2, level); // 점수 증가
@@ -155,7 +167,7 @@ public class Dongle : MonoBehaviour
         isMerge = false; //잠금장치 해제
     }
 
-    void OnTriggerStay2D(Collider2D collision)
+    void OnTriggerStay2D(Collider2D collision) //동글이 라인과 접촉
     {
         if(collision.tag == "Finish") //경계선에 접촉해있으면
         {
@@ -171,6 +183,15 @@ public class Dongle : MonoBehaviour
                 // 5초 이상 머무를 시 게임 오버
                 manager.GameOver();
             }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Finish") //경계선 나가면
+        {
+            deadTime = 0; //deadTime 초기화
+            spriteRenderer.color = Color.white; //색 초기화
         }
     }
 

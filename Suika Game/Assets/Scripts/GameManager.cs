@@ -39,6 +39,9 @@ public class GameManager : MonoBehaviour
 
     void NextDongle()
     {
+        if(isOver)
+            return;
+
         //생성된 동글을 가져와 new Dongle로 지정
         Dongle newDongle = GetDongle();
         lastDongle = newDongle;
@@ -80,8 +83,29 @@ public class GameManager : MonoBehaviour
     {
         if (isOver) //이미 게임 오버된 상태면 return
             return;
-        Debug.Log("gg");
+
         isOver = true;
+
+        StartCoroutine(GameOverRoutine());
     }
 
+    IEnumerator GameOverRoutine()
+    {
+        //1. 장면 안에 활성화 되어있는 모든 동글 가져오기
+        Dongle[] dongles = GameObject.FindObjectsOfType<Dongle>();
+
+        //2. 지우기 전에 모든 동글의 물리효과 비활성화
+        for (int i = 0; i < dongles.Length; i++)
+        {
+            dongles[i].rigid.simulated = false; //물리효과 비화성화
+        }
+
+        //3. 1번 목록을 하나씩 접근해서 지우기
+        for (int i = 0; i < dongles.Length; i++)
+        {
+            dongles[i].Hide(Vector3.up * 100); //게임 플레이 중에는 나올 수 없는 큰값을 전달하여 숨기기
+
+            yield return new WaitForSeconds(0.1f); //시간차를 두고 동글이 사라지도록 대기
+        }
+    }
 }
