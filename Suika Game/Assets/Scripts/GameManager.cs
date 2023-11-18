@@ -10,6 +10,12 @@ public class GameManager : MonoBehaviour
     public GameObject effectPrefab; //이펙트 프리팹
     public Transform effectGroup;   //이펙트가 생성될 위치
 
+    public AudioSource bgmPlayer;
+    public AudioSource[] sfxPlayer;
+    public AudioClip[] sfxClip; //여러 효과음들이 담길 변수
+    public enum Sfx { LevelUp, Next, Attach, Button, Over };
+    int sfxCursor; //다음에 재생할 AudioSource를 가리킬 변수
+
     public int score;
     public int maxLevel;
     public bool isOver;
@@ -21,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        bgmPlayer.Play();
         NextDongle();
     }
 
@@ -48,6 +55,8 @@ public class GameManager : MonoBehaviour
         lastDongle.manager = this; //게임매니저를 넘겨준다.
         lastDongle.level = Random.Range(0, maxLevel); //레벨 0 ~ maxLevel-1에서 랜덤하게 생성되도록 구현
         lastDongle.gameObject.SetActive(true); //레벨 설정 후 활성화
+
+        SfxPlay(Sfx.Next);
         StartCoroutine(WaitNext()); //대기후 NextDongle을 실행하는 코루틴 시작
     }
 
@@ -107,5 +116,35 @@ public class GameManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f); //시간차를 두고 동글이 사라지도록 대기
         }
+
+        yield return new WaitForSeconds(1f);
+
+        SfxPlay(Sfx.Over);
+    }
+
+    public void SfxPlay(Sfx type)
+    {
+        switch(type)
+        {
+            case Sfx.LevelUp:
+                sfxPlayer[sfxCursor].clip = sfxClip[Random.Range(0, 3)]; //레벨업은 소리가 3개라서 랜덤하게 실행
+                break;
+            case Sfx.Next:
+                sfxPlayer[sfxCursor].clip = sfxClip[3];
+                break;
+            case Sfx.Attach:
+                sfxPlayer[sfxCursor].clip = sfxClip[4];
+                break;
+            case Sfx.Button:
+                sfxPlayer[sfxCursor].clip = sfxClip[5];
+                break;
+            case Sfx.Over:
+                sfxPlayer[sfxCursor].clip = sfxClip[6];
+                break;
+        }
+
+        sfxPlayer[sfxCursor].Play(); //재생시킬 AudioClip이 들어간 Audio Source를 실행
+
+        sfxCursor = (sfxCursor + 1) % sfxPlayer.Length; //계속해서 3개의 오디오 소스를 순환하도록 구현
     }
 }
