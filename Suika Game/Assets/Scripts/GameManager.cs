@@ -10,8 +10,9 @@ public class GameManager : MonoBehaviour
     public GameObject effectPrefab; //이펙트 프리팹
     public Transform effectGroup;   //이펙트가 생성될 위치
 
+    public int score;
     public int maxLevel;
-
+    public bool isOver;
 
     private void Awake()
     {
@@ -74,4 +75,13 @@ public class GameManager : MonoBehaviour
         lastDongle.Drop();
         lastDongle = null; //드랍하면서 보관용도로 저장해둔 변수는 null로 비운다.
     }
+
+    public void GameOver()
+    {
+        if (isOver) //이미 게임 오버된 상태면 return
+            return;
+        Debug.Log("gg");
+        isOver = true;
+    }
+
 }
