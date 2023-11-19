@@ -1275,11 +1275,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547b878f2eb16f44aae8478b1d449f1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastDongle: {fileID: 0}
   donglePrefab: {fileID: 5158210267845700610, guid: 535bd3f0da0dc334b844af92483d19f0, type: 3}
   dongleGroup: {fileID: 593549268}
+  donglePool: []
   effectPrefab: {fileID: 3158055889500360025, guid: 24da708623edab14795a424577c03a83, type: 3}
   effectGroup: {fileID: 662429489}
+  effectPool: []
+  poolSize: 10
+  poolCursor: 0
+  lastDongle: {fileID: 0}
   bgmPlayer: {fileID: 1674137131}
   sfxPlayer:
   - {fileID: 1974453227}

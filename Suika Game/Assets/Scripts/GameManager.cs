@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public Dongle lastDongle;
     public GameObject donglePrefab; //동글 프리팹
     public Transform dongleGroup;   //동글이 생성될 위치
+    public List<Dongle> donglePool;
+
     public GameObject effectPrefab; //이펙트 프리팹
     public Transform effectGroup;   //이펙트가 생성될 위치
+    public List<ParticleSystem> effectPool;
 
+    [Range(1, 30)]
+    public int poolSize;
+    public int poolCursor;
+
+    public Dongle lastDongle;
     public AudioSource bgmPlayer;
     public AudioSource[] sfxPlayer;
     public AudioClip[] sfxClip; //여러 효과음들이 담길 변수
@@ -23,6 +30,14 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 60;
+
+        donglePool = new List<Dongle>();
+        effectPool = new List<ParticleSystem>();
+
+        for (int i = 0; i < poolSize; i++)
+        {
+            MakeDongle(); //풀 만들기
+        }
     }
 
     private void Start()
@@ -31,17 +46,28 @@ public class GameManager : MonoBehaviour
         NextDongle();
     }
 
-    Dongle GetDongle()
+    Dongle MakeDongle()
     {
         //이펙트 생성
         GameObject instantEffectObj = Instantiate(effectPrefab, effectGroup);
+        instantEffectObj.name = "Effect " + effectPool.Count; //이름을 설정
         ParticleSystem instantEffect = instantEffectObj.GetComponent<ParticleSystem>();
+        effectPool.Add(instantEffect);
 
         //동글 프리팹 복사해서 가져옴, 이 때 부모는 동글 그룹으로 설정
         GameObject instantDongleObj = Instantiate(donglePrefab, dongleGroup);
+        instantDongleObj.name = "Dongle " + donglePool.Count; //이름을 설정
         Dongle instantDongle = instantDongleObj.GetComponent<Dongle>();
+        instantDongle.manager = this; //manager 변수도 초기화
         instantDongle.effect = instantEffect;
+        donglePool.Add(instantDongle);
+
         return instantDongle;
+    }
+
+    Dongle GetDongle()
+    {
+        return null;
     }
 
     void NextDongle()
@@ -52,7 +78,6 @@ public class GameManager : MonoBehaviour
         //생성된 동글을 가져와 new Dongle로 지정
         Dongle newDongle = GetDongle();
         lastDongle = newDongle;
-        lastDongle.manager = this; //게임매니저를 넘겨준다.
         lastDongle.level = Random.Range(0, maxLevel); //레벨 0 ~ maxLevel-1에서 랜덤하게 생성되도록 구현
         lastDongle.gameObject.SetActive(true); //레벨 설정 후 활성화
 
