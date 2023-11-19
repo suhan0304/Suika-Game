@@ -9,6 +9,7 @@ public class Dongle : MonoBehaviour
     public int level;
     public bool isDrag;
     public bool isMerge;
+    public bool isAttach; //충돌이 작동했는지 확인하는 변수
 
     public Rigidbody2D rigid;  //물리 효과 제어
     Animator anim; //애니메이션
@@ -28,6 +29,26 @@ public class Dongle : MonoBehaviour
     void OnEnable()
     {
         anim.SetInteger("Level", level);
+    }
+
+    void OnDisable()
+    {
+        //동글 속성 초기화
+        level = 0;
+        isDrag = false;
+        isMerge = false;
+        isAttach = false;
+
+        //동글 트랜스폼 초기화
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        transform.localScale = Vector3.zero;
+
+        //동글 물리 초기화
+        rigid.simulated = false;
+        rigid.velocity = Vector2.zero;
+        rigid.angularVelocity = 0;
+        circle.enabled = true;
     }
 
     void Update()
@@ -63,6 +84,24 @@ public class Dongle : MonoBehaviour
     {
         isDrag = false; //드래그 종료
         rigid.simulated = true; //다시 simulated를 true로 바꿔서 물리 시뮬레이션과 상호작용하도록 활성화
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        StartCoroutine(AttachRoutine());
+    }
+
+    IEnumerator AttachRoutine() //충돌음 제한을 위한 코루틴
+    {
+        if(isAttach) //이미 충돌음을 실행했다면 
+            yield break;    //코루틴을 탈출한다.
+
+        isAttach = true;
+        manager.SfxPlay(GameManager.Sfx.Attach);
+
+        yield return new WaitForSeconds(0.2f); //0.2f 동안 다른 충돌은 무시
+
+        isAttach = false;
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -157,6 +196,7 @@ public class Dongle : MonoBehaviour
 
         anim.SetInteger("Level", level + 1); //레벨 올려서 애니메이션 실행
         EffectPlay();
+        manager.SfxPlay(GameManager.Sfx.LevelUp);
 
         yield return new WaitForSeconds(0.3f); //애니메이션 실행 시간 대기
 
