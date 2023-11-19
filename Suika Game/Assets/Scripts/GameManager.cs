@@ -67,7 +67,15 @@ public class GameManager : MonoBehaviour
 
     Dongle GetDongle()
     {
-        return null;
+        for(int i=0;i<donglePool.Count;i++)
+        {
+            poolCursor = (poolCursor+1) % donglePool.Count; //커서가 오브젝트 풀을 계속 회전하도록 설정
+            if(!donglePool[poolCursor].gameObject.activeSelf) //비활성화된 오브젝트를 찾으면 해당 오브젝트를 사용
+            {
+                return donglePool[poolCursor]; //비활성화 되어있는 동글을 넘김
+            }
+        }
+        return MakeDongle(); //만약 donglePool에 없다면 MakeDongle로 풀에 하나 추가해서 넘김
     }
 
     void NextDongle()
@@ -76,8 +84,7 @@ public class GameManager : MonoBehaviour
             return;
 
         //생성된 동글을 가져와 new Dongle로 지정
-        Dongle newDongle = GetDongle();
-        lastDongle = newDongle;
+        lastDongle = GetDongle();
         lastDongle.level = Random.Range(0, maxLevel); //레벨 0 ~ maxLevel-1에서 랜덤하게 생성되도록 구현
         lastDongle.gameObject.SetActive(true); //레벨 설정 후 활성화
 
