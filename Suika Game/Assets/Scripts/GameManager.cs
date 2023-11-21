@@ -32,10 +32,16 @@ public class GameManager : MonoBehaviour
     int sfxCursor; //다음에 재생할 AudioSource를 가리킬 변수
 
     [Header("--------------[ UI ]")]
+    public GameObject startGroup;
     public GameObject endGroup;
     public Text scoreText;
     public Text maxScoreText;
     public Text subScoreText;
+
+    [Header("--------------[ ETC ]")]
+    public GameObject bottom;
+    public GameObject line;
+    public GameObject[] wall;
 
     private void Awake()
     {
@@ -56,10 +62,23 @@ public class GameManager : MonoBehaviour
         maxScoreText.text = PlayerPrefs.GetInt("MaxScore").ToString();
 }
 
-    private void Start()
+    public void GameStart()
     {
+        //오브젝트 활성화
+        line.SetActive(true);
+        bottom.SetActive(true);
+        wall[0].SetActive(true);
+        wall[1].SetActive(true);
+        scoreText.gameObject.SetActive(true);
+        maxScoreText.gameObject.SetActive(true);
+
+        //게임 시작 UI 비활성화
+        startGroup.SetActive(false);
+
         bgmPlayer.Play();
-        NextDongle();
+        SfxPlay(Sfx.Button);
+
+        Invoke("NextDongle", 1.5f);
     }
 
     Dongle MakeDongle()
@@ -216,6 +235,14 @@ public class GameManager : MonoBehaviour
         sfxPlayer[sfxCursor].Play(); //재생시킬 AudioClip이 들어간 Audio Source를 실행
 
         sfxCursor = (sfxCursor + 1) % sfxPlayer.Length; //계속해서 3개의 오디오 소스를 순환하도록 구현
+    }
+
+    void Update()
+    {
+        if(Input.GetButtonDown("Cancel")) //모바일용 게임종료함수
+        {
+            Application.Quit();
+        }    
     }
 
     private void LateUpdate()

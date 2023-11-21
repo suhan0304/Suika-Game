@@ -1898,10 +1898,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f07ead962d4b7e847bb7ba9976870ce9, type: 3}
   - {fileID: 8300000, guid: f6fa03999a0597a4fa8cdf6619791c13, type: 3}
   - {fileID: 8300000, guid: 7f5efdc907e256345ab7072a2e68f071, type: 3}
+  startGroup: {fileID: 517091869}
   endGroup: {fileID: 1885789385}
   scoreText: {fileID: 1730704707}
   maxScoreText: {fileID: 2113456189}
   subScoreText: {fileID: 132688533}
+  bottom: {fileID: 1303347341}
+  line: {fileID: 1641433760}
+  wall:
+  - {fileID: 1892433120}
+  - {fileID: 2016975306}
 --- !u!4 &1555448691
 Transform:
   m_ObjectHideFlags: 0
@@ -2429,7 +2435,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1555448690}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: Reset
+        m_MethodName: GameStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
