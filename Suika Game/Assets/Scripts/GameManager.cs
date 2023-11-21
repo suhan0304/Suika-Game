@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -176,6 +177,18 @@ public class GameManager : MonoBehaviour
         subScoreText.text = "점수 : " + scoreText.text;
 
         SfxPlay(Sfx.Over);
+    }
+
+    public void Reset()
+    {
+        SfxPlay(Sfx.Button); //버튼 선택음 
+        StartCoroutine(ResetCoroutine()); //리셋 코루틴 실행
+    }
+
+    IEnumerator ResetCoroutine()
+    {
+        yield return new WaitForSeconds(1f); //1초 대기후
+        SceneManager.LoadScene(0);           //0번 장면(게임씬) 로드
     }
 
     public void SfxPlay(Sfx type)
