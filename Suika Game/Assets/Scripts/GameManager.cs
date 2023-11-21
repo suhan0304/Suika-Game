@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 
     [Header("--------------[ UI ]")]
     public Text scoreText;
+    public Text maxScoreText;
 
     private void Awake()
     {
@@ -44,7 +45,13 @@ public class GameManager : MonoBehaviour
         {
             MakeDongle(); //풀 만들기
         }
-    }
+
+        if (!PlayerPrefs.HasKey("MaxScore")) //저장된 최고 점수가 없다면
+        {
+            PlayerPrefs.SetInt("MaxScore", 0); //MaxScore라는 이름으로 최고 점수 저장
+        }
+        maxScoreText.text = PlayerPrefs.GetInt("MaxScore").ToString();
+}
 
     private void Start()
     {
@@ -156,6 +163,9 @@ public class GameManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
+
+        int maxSocre = Mathf.Max(score, PlayerPrefs.GetInt("MaxScore"));
+        PlayerPrefs.SetInt("MaxScore", maxSocre);
 
         SfxPlay(Sfx.Over);
     }
