@@ -31,8 +31,10 @@ public class GameManager : MonoBehaviour
     int sfxCursor; //다음에 재생할 AudioSource를 가리킬 변수
 
     [Header("--------------[ UI ]")]
+    public GameObject endGroup;
     public Text scoreText;
     public Text maxScoreText;
+    public Text subScoreText;
 
     private void Awake()
     {
@@ -164,8 +166,14 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+
+        //최고 점수 갱신
         int maxSocre = Mathf.Max(score, PlayerPrefs.GetInt("MaxScore"));
         PlayerPrefs.SetInt("MaxScore", maxSocre);
+
+        //게임 오버 UI 표시
+        endGroup.SetActive(true);
+        subScoreText.text = "점수 : " + scoreText.text;
 
         SfxPlay(Sfx.Over);
     }
