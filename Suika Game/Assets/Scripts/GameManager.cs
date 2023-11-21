@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class GameManager : MonoBehaviour
     public enum Sfx { LevelUp, Next, Attach, Button, Over };
     int sfxCursor; //다음에 재생할 AudioSource를 가리킬 변수
 
+    [Header("--------------[ UI ]")]
+    public Text scoreText;
 
     private void Awake()
     {
@@ -181,5 +184,10 @@ public class GameManager : MonoBehaviour
         sfxPlayer[sfxCursor].Play(); //재생시킬 AudioClip이 들어간 Audio Source를 실행
 
         sfxCursor = (sfxCursor + 1) % sfxPlayer.Length; //계속해서 3개의 오디오 소스를 순환하도록 구현
+    }
+
+    private void LateUpdate()
+    {
+        scoreText.text = score.ToString();
     }
 }
