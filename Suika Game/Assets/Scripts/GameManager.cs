@@ -4,28 +4,31 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("--------------[ Core ]")]
+    public int score;
+    public int maxLevel;
+    public bool isOver;
+
+    [Header("--------------[ Object Pooling ]")]
     public GameObject donglePrefab; //동글 프리팹
     public Transform dongleGroup;   //동글이 생성될 위치
     public List<Dongle> donglePool;
-
     public GameObject effectPrefab; //이펙트 프리팹
     public Transform effectGroup;   //이펙트가 생성될 위치
     public List<ParticleSystem> effectPool;
-
     [Range(1, 30)]
     public int poolSize;
     public int poolCursor;
 
     public Dongle lastDongle;
+    
+    [Header("--------------[ Audio ]")]
     public AudioSource bgmPlayer;
     public AudioSource[] sfxPlayer;
     public AudioClip[] sfxClip; //여러 효과음들이 담길 변수
     public enum Sfx { LevelUp, Next, Attach, Button, Over };
     int sfxCursor; //다음에 재생할 AudioSource를 가리킬 변수
 
-    public int score;
-    public int maxLevel;
-    public bool isOver;
 
     private void Awake()
     {
