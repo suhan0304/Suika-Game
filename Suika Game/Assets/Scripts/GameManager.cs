@@ -176,6 +176,7 @@ public class GameManager : MonoBehaviour
         endGroup.SetActive(true);
         subScoreText.text = "Á¡¼ö : " + scoreText.text;
 
+        bgmPlayer.Stop();
         SfxPlay(Sfx.Over);
     }
 
