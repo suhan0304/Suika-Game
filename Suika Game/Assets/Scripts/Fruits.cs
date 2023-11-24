@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dongle : MonoBehaviour
+public class Fruits : MonoBehaviour
 {
-    public GameManager manager; //nextDongle에서 게임매니저를 넘겨받음
+    public GameManager manager; //nextFruits에서 게임매니저를 넘겨받음
     public ParticleSystem effect;
     public int level;
     public bool isDrag;
@@ -58,8 +58,8 @@ public class Dongle : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             //x축 경계설정
-            float leftBorder = -4.65f + transform.localScale.x / 2f; //벽1의 x좌표는 -5이고 두께가 0.5이므로 벽의 오른쪽 끝을  -4.65으로 설정, 동글의 반지름도 + 해준다.
-            float rightBorder = 4.65f - transform.localScale.x / 2f; //벽2의 x좌표는 5이고 두께가 0.5이므로 벽의 왼쪽 끝을 4.65으로 설정, 동글의 반지름도 - 해준다.
+            float leftBorder = -7f + transform.localScale.x / 2f; //벽1의 x좌표는 -5이고 두께가 0.5이므로 벽의 오른쪽 끝을  -4.65으로 설정, 동글의 반지름도 + 해준다.
+            float rightBorder = 7f - transform.localScale.x / 2f; //벽2의 x좌표는 5이고 두께가 0.5이므로 벽의 왼쪽 끝을 4.65으로 설정, 동글의 반지름도 - 해준다.
 
             if (mousePos.x < leftBorder)
             {
@@ -106,10 +106,10 @@ public class Dongle : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Dongle")
+        if(collision.gameObject.tag == "Fruits")
         {
             //충돌한 동글을 가져온다.
-            Dongle other = collision.gameObject.GetComponent<Dongle>();
+            Fruits other = collision.gameObject.GetComponent<Fruits>();
 
             //1. 상대와 나의 레벨이 같을 때
             //2. 내가 합치는 중이 아닐때
