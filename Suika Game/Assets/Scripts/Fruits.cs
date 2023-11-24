@@ -108,6 +108,8 @@ public class Fruits : MonoBehaviour
     {
         if(collision.gameObject.tag == "Fruit")
         {
+            Debug.Log("!");
+
             //충돌한 동글을 가져온다.
             Fruits other = collision.gameObject.GetComponent<Fruits>();
 
