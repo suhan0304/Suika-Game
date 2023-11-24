@@ -10,6 +10,7 @@ public class Dongle : MonoBehaviour
     public bool isDrag;
     public bool isMerge;
     public bool isAttach; //충돌이 작동했는지 확인하는 변수
+    public float[] circleSize = { 0.23f, 0.24f, 0.305f, 0.38f, 0.475f, 0.585f, 0.685f, 0.805f, 1.02f, 1.1f, 1.295f };  
 
     public Rigidbody2D rigid;  //물리 효과 제어
     Animator anim; //애니메이션
@@ -29,6 +30,7 @@ public class Dongle : MonoBehaviour
     void OnEnable()
     {
         anim.SetInteger("Level", level);
+        circle.radius = circleSize[level];
     }
 
     void OnDisable()
@@ -58,8 +60,8 @@ public class Dongle : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             //x축 경계설정
-            float leftBorder = -4.65f + transform.localScale.x / 2f; //벽1의 x좌표는 -5이고 두께가 0.5이므로 벽의 오른쪽 끝을  -4.65으로 설정, 동글의 반지름도 + 해준다.
-            float rightBorder = 4.65f - transform.localScale.x / 2f; //벽2의 x좌표는 5이고 두께가 0.5이므로 벽의 왼쪽 끝을 4.65으로 설정, 동글의 반지름도 - 해준다.
+            float leftBorder = -4.65f + circleSize[level]; //벽1의 x좌표는 -5이고 두께가 0.5이므로 벽의 오른쪽 끝을  -4.65으로 설정, 동글의 반지름도 + 해준다.
+            float rightBorder = 4.65f - circleSize[level]; //벽2의 x좌표는 5이고 두께가 0.5이므로 벽의 왼쪽 끝을 4.65으로 설정, 동글의 반지름도 - 해준다.
 
             if (mousePos.x < leftBorder)
             {
@@ -106,7 +108,7 @@ public class Dongle : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Dongle")
+        if(collision.gameObject.tag == "Fruit")
         {
             //충돌한 동글을 가져온다.
             Dongle other = collision.gameObject.GetComponent<Dongle>();
