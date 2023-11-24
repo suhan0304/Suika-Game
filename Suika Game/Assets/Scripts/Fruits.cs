@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dongle : MonoBehaviour
+public class Fruits : MonoBehaviour
 {
-    public GameManager manager; //nextDongle에서 게임매니저를 넘겨받음
+    public GameManager manager; //nextFruits에서 게임매니저를 넘겨받음
     public ParticleSystem effect;
     public int level;
     public bool isDrag;
@@ -13,7 +13,7 @@ public class Dongle : MonoBehaviour
     public float[] circleSize = { 0.23f, 0.24f, 0.305f, 0.38f, 0.475f, 0.585f, 0.685f, 0.805f, 1.02f, 1.1f, 1.295f };  
 
     public Rigidbody2D rigid;  //물리 효과 제어
-    Animator anim; //애니메이션
+    public Animator anim; //애니메이션
     CircleCollider2D circle;
     SpriteRenderer spriteRenderer;
 
@@ -111,7 +111,7 @@ public class Dongle : MonoBehaviour
         if(collision.gameObject.tag == "Fruit")
         {
             //충돌한 동글을 가져온다.
-            Dongle other = collision.gameObject.GetComponent<Dongle>();
+            Fruits other = collision.gameObject.GetComponent<Fruits>();
 
             //1. 상대와 나의 레벨이 같을 때
             //2. 내가 합치는 중이 아닐때
