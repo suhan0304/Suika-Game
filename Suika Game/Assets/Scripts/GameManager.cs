@@ -12,9 +12,9 @@ public class GameManager : MonoBehaviour
     public bool isOver;
 
     [Header("--------------[ Object Pooling ]")]
-    public GameObject donglePrefab; //동글 프리팹
-    public Transform dongleGroup;   //동글이 생성될 위치
-    public List<Dongle> donglePool;
+    public GameObject FruitsPrefab; //동글 프리팹
+    public Transform FruitsGroup;   //동글이 생성될 위치
+    public List<Fruits> FruitsPool;
     public GameObject effectPrefab; //이펙트 프리팹
     public Transform effectGroup;   //이펙트가 생성될 위치
     public List<ParticleSystem> effectPool;
@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public int poolSize;
     public int poolCursor;
 
-    public Dongle lastDongle;
+    public Fruits lastFruits;
     
     [Header("--------------[ Audio ]")]
     public AudioSource bgmPlayer;
@@ -47,12 +47,12 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
 
-        donglePool = new List<Dongle>();
+        FruitsPool = new List<Fruits>();
         effectPool = new List<ParticleSystem>();
 
         for (int i = 0; i < poolSize; i++)
         {
-            MakeDongle(); //풀 만들기
+            MakeFruits(); //풀 만들기
         }
 
         if (!PlayerPrefs.HasKey("MaxScore")) //저장된 최고 점수가 없다면
@@ -78,10 +78,10 @@ public class GameManager : MonoBehaviour
         bgmPlayer.Play();
         SfxPlay(Sfx.Button);
 
-        Invoke("NextDongle", 1.5f);
+        Invoke("NextFruits", 1.5f);
     }
 
-    Dongle MakeDongle()
+    Fruits MakeFruits()
     {
         //이펙트 생성
         GameObject instantEffectObj = Instantiate(effectPrefab, effectGroup);
@@ -90,69 +90,69 @@ public class GameManager : MonoBehaviour
         effectPool.Add(instantEffect);
 
         //동글 프리팹 복사해서 가져옴, 이 때 부모는 동글 그룹으로 설정
-        GameObject instantDongleObj = Instantiate(donglePrefab, dongleGroup);
-        instantDongleObj.name = "Dongle " + donglePool.Count; //이름을 설정
-        Dongle instantDongle = instantDongleObj.GetComponent<Dongle>();
-        instantDongle.manager = this; //manager 변수도 초기화
-        instantDongle.effect = instantEffect;
-        donglePool.Add(instantDongle);
+        GameObject instantFruitsObj = Instantiate(FruitsPrefab, FruitsGroup);
+        instantFruitsObj.name = "Fruits " + FruitsPool.Count; //이름을 설정
+        Fruits instantFruits = instantFruitsObj.GetComponent<Fruits>();
+        instantFruits.manager = this; //manager 변수도 초기화
+        instantFruits.effect = instantEffect;
+        FruitsPool.Add(instantFruits);
 
-        return instantDongle;
+        return instantFruits;
     }
 
-    Dongle GetDongle()
+    Fruits GetFruits()
     {
-        for(int i=0;i<donglePool.Count;i++)
+        for(int i=0;i<FruitsPool.Count;i++)
         {
-            poolCursor = (poolCursor+1) % donglePool.Count; //커서가 오브젝트 풀을 계속 회전하도록 설정
-            if(!donglePool[poolCursor].gameObject.activeSelf) //비활성화된 오브젝트를 찾으면 해당 오브젝트를 사용
+            poolCursor = (poolCursor+1) % FruitsPool.Count; //커서가 오브젝트 풀을 계속 회전하도록 설정
+            if(!FruitsPool[poolCursor].gameObject.activeSelf) //비활성화된 오브젝트를 찾으면 해당 오브젝트를 사용
             {
-                return donglePool[poolCursor]; //비활성화 되어있는 동글을 넘김
+                return FruitsPool[poolCursor]; //비활성화 되어있는 동글을 넘김
             }
         }
-        return MakeDongle(); //만약 donglePool에 없다면 MakeDongle로 풀에 하나 추가해서 넘김
+        return MakeFruits(); //만약 FruitsPool에 없다면 MakeFruits로 풀에 하나 추가해서 넘김
     }
 
-    void NextDongle()
+    void NextFruits()
     {
         if(isOver)
             return;
 
-        //생성된 동글을 가져와 new Dongle로 지정
-        lastDongle = GetDongle();
-        lastDongle.level = Random.Range(0, maxLevel); //레벨 0 ~ maxLevel-1에서 랜덤하게 생성되도록 구현
-        lastDongle.gameObject.SetActive(true); //레벨 설정 후 활성화
+        //생성된 동글을 가져와 new Fruits로 지정
+        lastFruits = GetFruits();
+        lastFruits.level = Random.Range(0, maxLevel); //레벨 0 ~ maxLevel-1에서 랜덤하게 생성되도록 구현
+        lastFruits.gameObject.SetActive(true); //레벨 설정 후 활성화
 
         SfxPlay(Sfx.Next);
-        StartCoroutine(WaitNext()); //대기후 NextDongle을 실행하는 코루틴 시작
+        StartCoroutine(WaitNext()); //대기후 NextFruits을 실행하는 코루틴 시작
     }
 
     IEnumerator WaitNext()
     {
-        while(lastDongle != null)
+        while(lastFruits != null)
         {
             yield return null; //한 프레임을 대기한다.
         }
 
         yield return new WaitForSeconds(2.5f); //2.5초를 대기한다
 
-        NextDongle();
+        NextFruits();
     }
 
     public void TouchDown()
     {
-        if (lastDongle == null) //lastDongle이 없으면 실행하지 않음
+        if (lastFruits == null) //lastFruits이 없으면 실행하지 않음
             return;
 
-        lastDongle.Drag();
+        lastFruits.Drag();
     }
 
     public void TouchUp()
     {
-        if (lastDongle == null) //lastDongle이 없으면 실행하지 않음
+        if (lastFruits == null) //lastFruits이 없으면 실행하지 않음
             return;
-        lastDongle.Drop();
-        lastDongle = null; //드랍하면서 보관용도로 저장해둔 변수는 null로 비운다.
+        lastFruits.Drop();
+        lastFruits = null; //드랍하면서 보관용도로 저장해둔 변수는 null로 비운다.
     }
 
     public void GameOver()
@@ -168,18 +168,18 @@ public class GameManager : MonoBehaviour
     IEnumerator GameOverRoutine()
     {
         //1. 장면 안에 활성화 되어있는 모든 동글 가져오기
-        Dongle[] dongles = GameObject.FindObjectsOfType<Dongle>();
+        Fruits[] Fruitss = GameObject.FindObjectsOfType<Fruits>();
 
         //2. 지우기 전에 모든 동글의 물리효과 비활성화
-        for (int i = 0; i < dongles.Length; i++)
+        for (int i = 0; i < Fruitss.Length; i++)
         {
-            dongles[i].rigid.simulated = false; //물리효과 비화성화
+            Fruitss[i].rigid.simulated = false; //물리효과 비화성화
         }
 
         //3. 1번 목록을 하나씩 접근해서 지우기
-        for (int i = 0; i < dongles.Length; i++)
+        for (int i = 0; i < Fruitss.Length; i++)
         {
-            dongles[i].Hide(Vector3.up * 100); //게임 플레이 중에는 나올 수 없는 큰값을 전달하여 숨기기
+            Fruitss[i].Hide(Vector3.up * 100); //게임 플레이 중에는 나올 수 없는 큰값을 전달하여 숨기기
 
             yield return new WaitForSeconds(0.1f); //시간차를 두고 동글이 사라지도록 대기
         }
