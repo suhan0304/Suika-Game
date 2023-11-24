@@ -106,7 +106,7 @@ public class Fruits : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Fruits")
+        if(collision.gameObject.tag == "Fruit")
         {
             //충돌한 동글을 가져온다.
             Fruits other = collision.gameObject.GetComponent<Fruits>();
