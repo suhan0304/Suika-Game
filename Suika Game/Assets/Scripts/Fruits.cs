@@ -12,7 +12,7 @@ public class Fruits : MonoBehaviour
     public bool isAttach; //충돌이 작동했는지 확인하는 변수
 
     public Rigidbody2D rigid;  //물리 효과 제어
-    Animator anim; //애니메이션
+    public Animator anim; //애니메이션
     CircleCollider2D circle;
     SpriteRenderer spriteRenderer;
 
@@ -29,6 +29,7 @@ public class Fruits : MonoBehaviour
     void OnEnable()
     {
         anim.SetInteger("Level", level);
+        Debug.Log("!");
     }
 
     void OnDisable()
@@ -108,8 +109,6 @@ public class Fruits : MonoBehaviour
     {
         if(collision.gameObject.tag == "Fruit")
         {
-            Debug.Log("!");
-
             //충돌한 동글을 가져온다.
             Fruits other = collision.gameObject.GetComponent<Fruits>();
 
