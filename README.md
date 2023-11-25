@@ -5,9 +5,10 @@
 
 # In-Game
 
+![suika 2](https://github.com/suhan0304/Suika-Game/assets/102403989/1b9db97e-96d8-4be2-bf80-79371d61edd4)
+
 ![suika 1](https://github.com/suhan0304/Suika-Game/assets/102403989/5abedb26-4a8d-47c9-bf17-b303e2b679fa)
 
-![suika 2](https://github.com/suhan0304/Suika-Game/assets/102403989/1b9db97e-96d8-4be2-bf80-79371d61edd4)
 
 ---
 
